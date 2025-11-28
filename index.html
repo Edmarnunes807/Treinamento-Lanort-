@@ -384,7 +384,8 @@
         white-space: nowrap;
     }
     
-    .modal {
+    /* Estilos para o pop-up de vídeo */
+    .video-popup {
         display: none;
         position: fixed;
         top: 0;
@@ -396,7 +397,7 @@
         animation: fadeIn 0.3s ease;
     }
     
-    .modal-content {
+    .video-popup-content {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -409,7 +410,7 @@
         box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
     
-    .modal-header {
+    .video-popup-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -418,12 +419,12 @@
         color: white;
     }
     
-    .modal-title {
+    .video-popup-title {
         font-size: 1.3rem;
         font-weight: 600;
     }
     
-    .close-modal {
+    .close-video-popup {
         background: none;
         border: none;
         color: white;
@@ -439,22 +440,22 @@
         transition: background 0.3s ease;
     }
     
-    .close-modal:hover {
+    .close-video-popup:hover {
         background: rgba(255,255,255,0.2);
     }
     
-    .modal-body {
+    .video-popup-body {
         padding: 0;
     }
     
-    .modal-video {
+    .video-popup-iframe {
         width: 100%;
         height: 500px;
         border: none;
         display: block;
     }
     
-    .modal-controls {
+    .video-popup-controls {
         padding: 20px;
         background: var(--light);
         display: flex;
@@ -512,20 +513,20 @@
             text-align: center;
         }
         
-        .modal-video {
+        .video-popup-iframe {
             height: 300px;
         }
         
-        .modal-content {
+        .video-popup-content {
             width: 95%;
         }
         
-        .modal-controls {
+        .video-popup-controls {
             flex-direction: column;
             gap: 10px;
         }
         
-        .modal-controls .btn {
+        .video-popup-controls .btn {
             width: 100%;
             justify-content: center;
         }
@@ -613,20 +614,20 @@
             </div>
         </div>
         
-        <!-- Modal de Vídeo -->
-        <div class="modal" id="video-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title" id="modal-title">Carregando...</div>
-                    <button class="close-modal" onclick="fecharModal()">×</button>
+        <!-- Pop-up de Vídeo -->
+        <div class="video-popup" id="video-popup">
+            <div class="video-popup-content">
+                <div class="video-popup-header">
+                    <div class="video-popup-title" id="video-popup-title">Carregando...</div>
+                    <button class="close-video-popup" onclick="fecharVideoPopup()">×</button>
                 </div>
-                <div class="modal-body">
-                    <iframe class="modal-video" id="modal-video" 
+                <div class="video-popup-body">
+                    <iframe class="video-popup-iframe" id="video-popup-iframe" 
                             allow="autoplay; fullscreen" 
                             allowfullscreen>
                     </iframe>
                 </div>
-                <div class="modal-controls">
+                <div class="video-popup-controls">
                     <button class="btn-outline" onclick="aulaAnterior()" id="btn-anterior">
                         ← Aula Anterior
                     </button>
@@ -940,19 +941,19 @@
             document.querySelectorAll('.aula').forEach(a => a.classList.remove('ativa'));
             event.currentTarget.classList.add('ativa');
             
-            document.getElementById('modal-title').textContent = nome;
-            document.getElementById('video-modal').style.display = 'block';
+            document.getElementById('video-popup-title').textContent = nome;
+            document.getElementById('video-popup').style.display = 'block';
             
-            const iframe = document.getElementById('modal-video');
+            const iframe = document.getElementById('video-popup-iframe');
             iframe.src = url + '?autoplay=1';
             
             iniciarMonitoramentoProgresso();
             atualizarBotoesNavegacao();
         }
 
-        function fecharModal() {
-            document.getElementById('video-modal').style.display = 'none';
-            document.getElementById('modal-video').src = '';
+        function fecharVideoPopup() {
+            document.getElementById('video-popup').style.display = 'none';
+            document.getElementById('video-popup-iframe').src = '';
             
             pararMonitoramentoProgresso();
             processarAulas(todasAulas);
@@ -1026,7 +1027,7 @@
                 btnConcluir.disabled = true;
                 
                 setTimeout(() => {
-                    fecharModal();
+                    fecharVideoPopup();
                 }, 1500);
             }
         }
@@ -1131,16 +1132,15 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                fecharModal();
+                fecharVideoPopup();
             }
         });
 
-        document.getElementById('video-modal').addEventListener('click', function(e) {
+        document.getElementById('video-popup').addEventListener('click', function(e) {
             if (e.target === this) {
-                fecharModal();
+                fecharVideoPopup();
             }
         });
     </script>
 </body>
-
 </html>
