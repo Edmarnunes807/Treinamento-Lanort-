@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player de Vídeos</title>
+    <title>Teste API - Depuração</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background: #1e1e2e;
             color: #fff;
             min-height: 100vh;
             padding: 20px;
@@ -28,260 +28,199 @@
             text-align: center;
             margin-bottom: 30px;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-        
-        .description {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 30px;
-            font-size: 1.2rem;
-        }
-        
-        .error {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 0, 0, 0.2);
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .video-card {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            border-radius: 15px;
+        }
+        
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .video-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        .video-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .category {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .video-type {
-            background: rgba(255, 215, 0, 0.3);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-        
-        .video-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
-        .video-player {
-            width: 100%;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-        
-        .video-player iframe {
-            width: 100%;
-            height: 250px;
-            border: none;
-        }
-        
-        .play-button {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            text-decoration: none;
-        }
-        
-        .play-button:hover {
-            background: linear-gradient(to right, #ff4b2b, #ff416c);
-            transform: scale(1.02);
-        }
-        
-        .no-videos {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-        }
-        
-        .refresh-button {
-            display: block;
-            margin: 20px auto;
+        button {
             padding: 12px 25px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #7289da;
             color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: none;
             border-radius: 10px;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
+            margin: 10px 5px;
         }
         
-        .refresh-button:hover {
-            background: rgba(255, 255, 255, 0.3);
+        button:hover {
+            background: #5b73c4;
         }
         
-        @media (max-width: 600px) {
-            .video-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .category, .video-type {
-                margin-bottom: 5px;
-            }
-            
-            .video-player iframe {
-                height: 200px;
-            }
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin-top: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .success {
+            color: #4CAF50;
+        }
+        
+        .error {
+            color: #f44336;
+        }
+        
+        .info {
+            color: #2196F3;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Player de Vídeos</h1>
-            <p class="description">Conteúdos carregados diretamente da sua planilha</p>
+            <h1>Depuração da API</h1>
+            <p>Testando conexão com sua API do Google Sheets</p>
         </header>
         
-        <div id="loading" class="loading">
-            Carregando vídeos...
+        <div class="panel">
+            <h2>Teste de Conexão</h2>
+            <button onclick="testAPI()">Testar API</button>
+            <button onclick="testCORS()">Testar CORS</button>
+            <button onclick="clearLog()">Limpar Log</button>
+            
+            <div id="status"></div>
+            <pre id="log"></pre>
         </div>
         
-        <div id="error" class="error" style="display: none;">
-            Erro ao carregar os vídeos. Tente novamente.
+        <div class="panel">
+            <h2>Player de Vídeos (Se funcionar)</h2>
+            <div id="videos-container"></div>
         </div>
-        
-        <div id="videos-container"></div>
-        
-        <button id="refresh" class="refresh-button" style="display: none;">
-            Recarregar Vídeos
-        </button>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const videosContainer = document.getElementById('videos-container');
-            const loadingElement = document.getElementById('loading');
-            const errorElement = document.getElementById('error');
-            const refreshButton = document.getElementById('refresh');
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbzHoYUJ8INDFlmvd_BFkAh0SUCCBDEhs_nRIvb84VUgmzH9Q0X_S_Bgdmyc85CdVJrDqQ/exec';
+        const logElement = document.getElementById('log');
+        const statusElement = document.getElementById('status');
+        const videosContainer = document.getElementById('videos-container');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] <span class="${type}">${message}</span>\n`;
+            logElement.innerHTML += logEntry;
+            console.log(message);
+        }
+
+        function clearLog() {
+            logElement.innerHTML = '';
+            statusElement.innerHTML = '';
+        }
+
+        async function testAPI() {
+            clearLog();
+            log('Iniciando teste da API...', 'info');
             
-            // URL da sua API
-            const apiUrl = 'https://script.google.com/macros/s/AKfycbzHoYUJ8INDFlmvd_BFkAh0SUCCBDEhs_nRIvb84VUgmzH9Q0X_S_Bgdmyc85CdVJrDqQ/exec';
-            
-            // Função para carregar os vídeos
-            async function loadVideos() {
-                try {
-                    loadingElement.style.display = 'block';
-                    errorElement.style.display = 'none';
-                    videosContainer.innerHTML = '';
-                    refreshButton.style.display = 'none';
-                    
-                    const response = await fetch(apiUrl);
-                    
-                    if (!response.ok) {
-                        throw new Error('Erro na resposta da API');
-                    }
-                    
-                    const videos = await response.json();
-                    
-                    loadingElement.style.display = 'none';
-                    
-                    if (videos.length === 0) {
-                        videosContainer.innerHTML = `
-                            <div class="no-videos">
-                                <h2>Nenhum vídeo encontrado</h2>
-                                <p>Não há vídeos disponíveis no momento.</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    // Processar e exibir os vídeos
-                    videos.forEach(video => {
-                        const videoCard = document.createElement('div');
-                        videoCard.className = 'video-card';
-                        
-                        // Extrair o ID do vídeo do Google Drive
-                        const driveUrl = video.url;
-                        let videoId = '';
-                        
-                        if (driveUrl.includes('/file/d/')) {
-                            videoId = driveUrl.split('/file/d/')[1].split('/')[0];
-                        }
-                        
-                        // URL para embed do Google Drive
-                        const embedUrl = videoId ? 
-                            `https://drive.google.com/file/d/${videoId}/preview` : 
-                            video.url;
-                        
-                        videoCard.innerHTML = `
-                            <div class="video-header">
-                                <span class="category">${video.categoria}</span>
-                                <span class="video-type">${video.tipo}</span>
-                            </div>
-                            <h3 class="video-title">${video.nome}</h3>
-                            <div class="video-player">
-                                <iframe src="${embedUrl}" allow="autoplay" allowfullscreen></iframe>
-                            </div>
-                            <a href="${embedUrl}" target="_blank" class="play-button">
-                                Abrir Vídeo
-                            </a>
-                        `;
-                        
-                        videosContainer.appendChild(videoCard);
-                    });
-                    
-                } catch (error) {
-                    console.error('Erro ao carregar vídeos:', error);
-                    loadingElement.style.display = 'none';
-                    errorElement.style.display = 'block';
-                    refreshButton.style.display = 'block';
+            try {
+                log(`Fazendo requisição para: ${apiUrl}`, 'info');
+                
+                const startTime = Date.now();
+                const response = await fetch(apiUrl);
+                const endTime = Date.now();
+                
+                log(`Tempo de resposta: ${endTime - startTime}ms`, 'info');
+                log(`Status HTTP: ${response.status}`, response.status === 200 ? 'success' : 'error');
+                log(`OK: ${response.ok}`, response.ok ? 'success' : 'error');
+                log(`Headers:`, 'info');
+                
+                // Log dos headers
+                for (const [key, value] of response.headers.entries()) {
+                    log(`  ${key}: ${value}`, 'info');
                 }
+                
+                if (response.ok) {
+                    const data = await response.text();
+                    log('Resposta recebida (primeiros 500 caracteres):', 'success');
+                    log(data.substring(0, 500), 'info');
+                    
+                    // Tentar parsear como JSON
+                    try {
+                        const jsonData = JSON.parse(data);
+                        log('✅ Dados parseados com sucesso como JSON!', 'success');
+                        displayVideos(jsonData);
+                    } catch (e) {
+                        log(`❌ Erro ao parsear JSON: ${e.message}`, 'error');
+                        log('A resposta pode não estar em formato JSON válido', 'error');
+                    }
+                } else {
+                    log(`❌ Erro na resposta: ${response.statusText}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Erro na requisição: ${error.message}`, 'error');
+                log(`Tipo do erro: ${error.name}`, 'error');
             }
+        }
+
+        async function testCORS() {
+            clearLog();
+            log('Testando CORS...', 'info');
             
-            // Carregar os vídeos quando a página carregar
-            loadVideos();
+            try {
+                // Teste com modo 'no-cors' para ver se há bloqueio CORS
+                const response = await fetch(apiUrl, { mode: 'no-cors' });
+                log('✅ Requisição no-cors bem sucedida', 'success');
+                log('Nota: O servidor pode estar bloqueando requisições CORS', 'info');
+            } catch (error) {
+                log(`❌ Erro CORS: ${error.message}`, 'error');
+            }
+        }
+
+        function displayVideos(videos) {
+            if (!videos || videos.length === 0) {
+                videosContainer.innerHTML = '<p>Nenhum vídeo encontrado</p>';
+                return;
+            }
+
+            let html = `<h3>Encontrados ${videos.length} itens:</h3>`;
             
-            // Adicionar evento ao botão de recarregar
-            refreshButton.addEventListener('click', loadVideos);
+            videos.forEach((video, index) => {
+                // Extrair ID do Google Drive
+                const driveUrl = video.url || '';
+                let videoId = '';
+                
+                if (driveUrl.includes('/file/d/')) {
+                    videoId = driveUrl.split('/file/d/')[1].split('/')[0];
+                }
+                
+                const embedUrl = videoId ? 
+                    `https://drive.google.com/file/d/${videoId}/preview` : 
+                    driveUrl;
+
+                html += `
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; margin: 10px 0; border-radius: 10px;">
+                        <h4>${video.nome || 'Sem nome'}</h4>
+                        <p><strong>Categoria:</strong> ${video.categoria || 'N/A'}</p>
+                        <p><strong>Tipo:</strong> ${video.tipo || 'N/A'}</p>
+                        <p><strong>URL:</strong> ${driveUrl || 'N/A'}</p>
+                        ${embedUrl ? `
+                            <div style="margin-top: 10px;">
+                                <iframe src="${embedUrl}" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
+                                <br>
+                                <a href="${embedUrl}" target="_blank" style="color: #7289da;">Abrir em nova aba</a>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            videosContainer.innerHTML = html;
+        }
+
+        // Testar automaticamente ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Página carregada. Clique em "Testar API" para começar.', 'info');
         });
     </script>
 </body>
